@@ -6,20 +6,20 @@ import 'package:flutter/foundation.dart';
 import 'food_basket.dart';
 
 class OrderFinised {
-    String? orderID;
-    String? orderDate;
-    String? orderSum;
-    int? orderStatus;
-    String? userUID;
+    String orderID;
+    String orderDate;
+    String orderSum;
+    int orderStatus;
+    String userUID;
     List<FoodBasket>? foodBaskets;
 
     
   OrderFinised({
-    this.orderID,
-    this.orderDate,
-    this.orderSum,
-    this.orderStatus,
-    this.userUID,
+    required this.orderID,
+    required this.orderDate,
+    required this.orderSum,
+    required this.orderStatus,
+    required this.userUID,
     this.foodBaskets,
   });
 
@@ -48,17 +48,17 @@ class OrderFinised {
       'orderSum': orderSum,
       'orderStatus': orderStatus,
       'userUID': userUID,
-      'foodBaskets': foodBaskets!.map((x) => x.toMap()).toList(),
+      'foodBaskets': foodBaskets?.map((x) => x.toMap()).toList(),
     };
   }
 
   factory OrderFinised.fromMap(Map<String, dynamic> map) {
     return OrderFinised(
-      orderID: map['orderID'] != null ? map['orderID'] as String : null,
-      orderDate: map['orderDate'] != null ? map['orderDate'] as String : null,
-      orderSum: map['orderSum'] != null ? map['orderSum'] as String : null,
-      orderStatus: map['orderStatus'] != null ? map['orderStatus'] as int : null,
-      userUID: map['userUID'] != null ? map['userUID'] as String : null,
+      orderID: map['orderID'] as String,
+      orderDate: map['orderDate'] as String,
+      orderSum: map['orderSum'] as String,
+      orderStatus: map['orderStatus'] as int,
+      userUID: map['userUID'] as String,
       foodBaskets: map['foodBaskets'] != null ? List<FoodBasket>.from((map['foodBaskets'] as List<int>).map<FoodBasket?>((x) => FoodBasket.fromMap(x as Map<String,dynamic>),),) : null,
     );
   }

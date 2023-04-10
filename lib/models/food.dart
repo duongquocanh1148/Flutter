@@ -2,19 +2,21 @@ import 'dart:convert';
 
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 class Food {
-    String? name;
-    String? image;
-    int? price;
-    int? rate;
-    String? resKey;
-    String? foodKey;
+    String name;
+    String image;
+    String? description;
+    int price;
+    int rate;
+    String resKey;
+    String foodKey;
   Food({
-    this.name,
-    this.image,
-    this.price,
-    this.rate,
-    this.resKey,
-    this.foodKey,
+    required this.name,
+    required this.image,
+    this.description,
+    required this.price,
+    required this.rate,
+    required this.resKey,
+    required this.foodKey,
   });
   
   // Products(this.id, this.title, this.description, this.image, this.price);
@@ -43,6 +45,7 @@ class Food {
   Food copyWith({
     String? name,
     String? image,
+    String? des,
     int? price,
     int? rate,
     String? resKey,
@@ -51,6 +54,7 @@ class Food {
     return Food(
       name: name ?? this.name,
       image: image ?? this.image,
+      description: description ?? description,
       price: price ?? this.price,
       rate: rate ?? this.rate,
       resKey: resKey ?? this.resKey,
@@ -62,6 +66,7 @@ class Food {
     return <String, dynamic>{
       'name': name,
       'image': image,
+      'description': description,
       'price': price,
       'rate': rate,
       'resKey': resKey,
@@ -71,12 +76,13 @@ class Food {
 
   factory Food.fromMap(Map<String, dynamic> map) {
     return Food(
-      name: map['name'] != null ? map['name'] as String : null,
-      image: map['image'] != null ? map['image'] as String : null,
-      price: map['price'] != null ? map['price'] as int : null,
-      rate: map['rate'] != null ? map['rate'] as int : null,
-      resKey: map['resKey'] != null ? map['resKey'] as String : null,
-      foodKey: map['foodKey'] != null ? map['foodKey'] as String : null,
+      name: map['name'] as String,
+      image: map['image'] as String,
+      description: map['description'] as String,
+      price: map['price'] as int,
+      rate: map['rate'] as int,
+      resKey: map['resKey'] as String,
+      foodKey: map['foodKey'] as String,
     );
   }
 
@@ -96,6 +102,7 @@ class Food {
     return 
       other.name == name &&
       other.image == image &&
+      other.description == description &&
       other.price == price &&
       other.rate == rate &&
       other.resKey == resKey &&
@@ -106,6 +113,7 @@ class Food {
   int get hashCode {
     return name.hashCode ^
       image.hashCode ^
+      description.hashCode ^
       price.hashCode ^
       rate.hashCode ^
       resKey.hashCode ^

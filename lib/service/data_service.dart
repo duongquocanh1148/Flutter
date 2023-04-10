@@ -17,9 +17,9 @@ Future<Map<String, dynamic>?> getUserData(String uid) async{
 saveUserDataSP() async {
   Users user = Users.fromMap(getUserData(FirebaseAuth.instance.currentUser!.uid) as Map<String, dynamic>);
   SharedPreferences prefs = await fPrefs;
-  prefs.setString('userID', user.userID!);
-  prefs.setString('email', user.email!);
-  prefs.setString('userName', user.userName!);
+  prefs.setString('userID', user.userID);
+  prefs.setString('email', user.email);
+  prefs.setString('userName', user.userName);
   prefs.setString('moblie', user.mobile!);
   prefs.setString('address', user.address!);
 }

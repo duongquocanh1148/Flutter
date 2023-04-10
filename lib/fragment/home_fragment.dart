@@ -1,11 +1,10 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+import 'package:food_now/models/food.dart';
 import 'package:food_now/models/restaurant.dart';
 import 'package:food_now/pages/detail_product_page.dart';
+import 'package:food_now/pages/detail_restaurant_page.dart';
 import 'package:food_now/widget/widget.dart';
-import 'package:firebase_database/ui/firebase_animated_list.dart';
 
 class HomeFragment extends StatelessWidget {
   const HomeFragment({super.key});
@@ -73,16 +72,31 @@ class _CatetgoryStoreState extends State<CatetgoryStore> {
                           scrollDirection: Axis.horizontal,
                           itemCount: snapshot.data!.children.length,
                           itemBuilder: (context, index) {
+                            var value =
+                                snapshot.data!.children.elementAt(index);
+                            Restaurant restaurant = Restaurant(
+                              resKey: value.child("resKey").value.toString(),
+                              name: value.child("name").value.toString(),
+                              logo: value.child("logo").value.toString(),
+                              cover: value.child("cover").value.toString(),
+                              address: value.child("address").value.toString(),
+                              openHours:
+                                  value.child("openHours").value.toString(),
+                              rate: value.child("rate").value as int,
+                            );
                             return Container(
                               padding: const EdgeInsets.all(5),
                               width: 140,
-                              
                               child: GestureDetector(
                                 child: Image.asset(
-                                    "asset/image/${snapshot.data!.children.elementAt(index).child("logo").value.toString()}", fit: BoxFit.fill),
+                                    "asset/image/${restaurant.logo}",
+                                    fit: BoxFit.fill),
                                 onTap: () {
-                                  // nextScreen(
-                                  //     context, const DetailProduct());
+                                  nextScreen(
+                                      context,
+                                      DetailRestaurant(
+                                        restaurant: restaurant,
+                                      ));
                                 },
                               ),
                             );
@@ -100,7 +114,6 @@ class _CatetgoryStoreState extends State<CatetgoryStore> {
     );
   }
 }
-
 
 class ProductPopular extends StatefulWidget {
   const ProductPopular({super.key});
@@ -137,13 +150,12 @@ class _ProductPopularState extends State<ProductPopular> {
         const SizedBox(
           height: 10,
         ),
-       
         SizedBox(
           width: MediaQuery.of(context).size.width,
           child: Row(
             children: [
               Expanded(
-                  child: FutureBuilder(
+                child: FutureBuilder(
                 future: databaseReference.get(),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
@@ -160,6 +172,15 @@ class _ProductPopularState extends State<ProductPopular> {
                           childAspectRatio: 0.65,
                         ),
                         itemBuilder: (context, index) {
+                          var value = snapshot.data!.children.elementAt(index);
+                          Food food = Food(
+                              name: value.child("name").value.toString(),
+                              image: value.child("image").value.toString(),
+                              description: value.child("description").value.toString(),
+                              price: value.child("price").value as int,
+                              rate: value.child("rate").value as int,  
+                              resKey: value.child("resKey").value.toString(),
+                              foodKey: value.child("foodKey").value.toString());
                           return Column(
                             children: [
                               Container(
@@ -170,20 +191,25 @@ class _ProductPopularState extends State<ProductPopular> {
                                   child: SizedBox(
                                     width: 120,
                                     child: Image.asset(
-                                      "asset/image/${snapshot.data!.children.elementAt(index).child("image").value.toString()}",
+                                      "asset/image/${food.image}",
                                       fit: BoxFit.fill,
                                     ),
                                   ),
                                   onTap: () {
                                     nextScreen(
-                                        context, const DetailProduct());
+                                        context,
+                                        DetailProduct(
+                                          food: food,
+                                        ));
                                   },
                                 ),
                               ),
-                              Text(snapshot.data!.children.elementAt(index).child("name").value.toString(),
+                              Text(
+                                  food.name,
                                   style: const TextStyle(
                                       color: Colors.green, fontSize: 18)),
-                              Text("${snapshot.data!.children.elementAt(index).child("price").value} VND",
+                              Text(
+                                  "${food.price} VND",
                                   style: const TextStyle(
                                       color: Colors.red, fontSize: 16))
                             ],

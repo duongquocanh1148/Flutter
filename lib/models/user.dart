@@ -1,19 +1,18 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
-
 class Users {
-  String? userID;
-  String? email;
-  String? password;
-  String? userName;
+  String userID;
+  String email;
+  String password;
+  String userName;
   String? mobile;
   String? address;
   Users({
-    this.userID,
-    this.email,
-    this.password,
-    this.userName,
+    required this.userID,
+    required this.email,
+    required this.password,
+    required this.userName,
     this.mobile,
     this.address,
   });
@@ -48,10 +47,10 @@ class Users {
 
   factory Users.fromMap(Map<String, dynamic> map) {
     return Users(
-      userID: map['userID'] != null ? map['userID'] as String : null,
-      email: map['email'] != null ? map['email'] as String : null,
-      password: map['password'] != null ? map['password'] as String : null,
-      userName: map['userName'] != null ? map['userName'] as String : null,
+      userID: map['userID'] as String,
+      email: map['email'] as String,
+      password: map['password'] as String,
+      userName: map['userName'] as String,
       mobile: map['mobile'] != null ? map['mobile'] as String : null,
       address: map['address'] != null ? map['address'] as String : null,
     );

@@ -2,25 +2,25 @@
 import 'dart:convert';
 
 class Cart {
-  int? id;
-  String? foodKey;
-  String? foodName;
-  int? foodPrice;
-  String? foodImage;
-  int? foodRate;
-  String? resKey;
-  int? quantity;
-  double? sum;
+  int id;
+  String foodKey;
+  String foodName;
+  int foodPrice;
+  String foodImage;
+  int foodRate;
+  String resKey;
+  int quantity;
+  double sum;
   Cart({
-    this.id,
-    this.foodKey,
-    this.foodName,
-    this.foodPrice,
-    this.foodImage,
-    this.foodRate,
-    this.resKey,
-    this.quantity,
-    this.sum,
+    required this.id,
+    required this.foodKey,
+    required this.foodName,
+    required this.foodPrice,
+    required this.foodImage,
+    required this.foodRate,
+    required this.resKey,
+    required this.quantity,
+    required this.sum,
   });
 
   Cart copyWith({
@@ -63,15 +63,15 @@ class Cart {
 
   factory Cart.fromMap(Map<String, dynamic> map) {
     return Cart(
-      id: map['id'] != null ? map['id'] as int : null,
-      foodKey: map['foodKey'] != null ? map['foodKey'] as String : null,
-      foodName: map['foodName'] != null ? map['foodName'] as String : null,
-      foodPrice: map['foodPrice'] != null ? map['foodPrice'] as int : null,
-      foodImage: map['foodImage'] != null ? map['foodImage'] as String : null,
-      foodRate: map['foodRate'] != null ? map['foodRate'] as int : null,
-      resKey: map['resKey'] != null ? map['resKey'] as String : null,
-      quantity: map['quantity'] != null ? map['quantity'] as int : null,
-      sum: map['sum'] != null ? map['sum'] as double : null,
+      id: map['id'] as int,
+      foodKey: map['foodKey'] as String,
+      foodName: map['foodName'] as String,
+      foodPrice: map['foodPrice'] as int,
+      foodImage: map['foodImage'] as String,
+      foodRate: map['foodRate'] as int,
+      resKey: map['resKey'] as String,
+      quantity: map['quantity'] as int,
+      sum: map['sum'] as double,
     );
   }
 

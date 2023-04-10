@@ -2,7 +2,8 @@
 import 'package:flutter/material.dart';
 // ignore: depend_on_referenced_packages
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:food_now/models/user.dart';
+import '../service/shared_preference.dart';
 import '../widget/widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -60,6 +61,8 @@ class _SignUpFormState extends State<SignUpForm> {
             'mobile': "",
             'address': "",
           };
+          SharedPrefs sharedPrefs = SharedPrefs();
+          //sharedPrefs.saveUser(map);
          
           FirebaseDatabase.instance
               .ref('users')

@@ -1,68 +1,36 @@
+// ignore_for_file: avoid_print
+
 import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/user.dart';
 
-class Shared_Prefs{
 
-  static const mapSharedPreference = '';
+class SharedPrefs{
 
-  static Future setMap(String email, String password) async {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.setString(
-        mapSharedPreference,
-        jsonEncode({
-          'username': email,
-          'password': password,
-    }));
-  }
-
-  static void getMap() async {
-    final prefs = await SharedPreferences.getInstance();
-    // return jsonDecode(prefs.getString(mapSharedPreference) ?? "") ?? {};
-    final rawJson = prefs.getString(mapSharedPreference);
-    Map<String, dynamic> map = jsonDecode(rawJson!);
-  
-    print(map['username']);
-  }
-
-  // static saveStr(String username, String password) async {
-  //   final prefs = await SharedPreferences.getInstance();
-  //   Map<String, dynamic> map = {
-  //     'username': username,
-  //     'password': password,
-  //   };
-  //   String rawJson = jsonEncode(map);
-  //   prefs.setString('key', rawJson);
-  // }
-
-  // static readPrefStr() async {
-  //   final prefs = await SharedPreferences.getInstance();
-  //   final rawJson = prefs.getString('key') ?? '';
-  //   Map<String, dynamic> map = jsonDecode(rawJson);
-  
-  //   print(map['username']);
-  // }
-
-  static saveStr(String username, String password) async {
+  saveUser(Users users) async {
     final SharedPreferences pref = await SharedPreferences.getInstance();
-    pref.setString('username', username);
-    pref.setString('password', password);
+    pref.setString('userName', users.userName);
+    pref.setString('password', users.password);
+    pref.setString('email', users.email);
+    pref.setString('userID', users.userID);
+    pref.setString('address', users.address!);
+    pref.setString('mobile', users.mobile!);
   }
 
-  static readPrefStr() async {
-    final SharedPreferences pref = await SharedPreferences.getInstance();
-    print(pref.getString('username'));
-    print(pref.getString('password'));
-  }
+  
 
-  static Future<Users> readPrefStr1() async{
+  readUser() async{
     final pref = await SharedPreferences.getInstance();
-    final username = pref.getString('username');
-    final password = pref.getString('password');
+    String? username = pref.getString('username');
+    String? password = pref.getString('password');
+    String? email = pref.getString('email');
+    String? userID = pref.getString('userID');
+    String? address= pref.getString('address');
+    String? mobile = pref.getString('mobile');
     print(username);
     print(password);
-    return Users(userName: username!, password: password!);
+    return Users(userName: username!, password: password!, email: email!, userID: userID!, address: address, mobile: mobile);
   }
 }
