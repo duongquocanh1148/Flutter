@@ -26,87 +26,85 @@ class _AccountInfoFragmentState extends State<AccountInfoFragment> {
     
     return Padding(
       padding: const EdgeInsets.all(10),
-      child: Expanded(
-        child: StreamBuilder(
-          stream: FirebaseDatabase.instance
-              .ref("users")
-              .child(firebaseAuth.currentUser!.uid)
-              .onValue,
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              
-              var user = snapshot.data!.snapshot;
-              return Column(         
-                children: [
-                  Text(
-                    "UserName: ${user.child("userName").value}",
-                    style: const TextStyle(
-                        color: Colors.green,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Text(
-                    "Email: ${user.child("email").value}",
-                    style: const TextStyle(
-                        color: Colors.green,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Text(
-                    "Mobile: ${user.child("mobile").value}",
-                    style: const TextStyle(
-                        color: Colors.green,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Text(
-                    "Address: ${user.child("address").value}",
-                    style: const TextStyle(
-                        color: Colors.green,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold),
-                  ),
-                   const SizedBox(
-                    height: 20,
-                  ),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width,
-                    height: 50,
-                    child: Container(
-                      // ignore: sort_child_properties_last
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(),
-                        onPressed: () async {
-                          firebaseAuth.signOut;
-                          nextScreenRemove(context, const SignIn());
-                        },
-                        child: const Text(
-                          "Log out",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16),
-                        ),
-                      ),
+      child: StreamBuilder(
+        stream: FirebaseDatabase.instance
+            .ref("users")
+            .child(firebaseAuth.currentUser!.uid)
+            .onValue,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            
+            var user = snapshot.data!.snapshot;
+            return Column(         
+              children: [
+                Text(
+                  "UserName: ${user.child("userName").value}",
+                  style: const TextStyle(
                       color: Colors.green,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Text(
+                  "Email: ${user.child("email").value}",
+                  style: const TextStyle(
+                      color: Colors.green,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Text(
+                  "Mobile: ${user.child("mobile").value}",
+                  style: const TextStyle(
+                      color: Colors.green,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Text(
+                  "Address: ${user.child("address").value}",
+                  style: const TextStyle(
+                      color: Colors.green,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold),
+                ),
+                 const SizedBox(
+                  height: 20,
+                ),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  height: 50,
+                  child: Container(
+                    // ignore: sort_child_properties_last
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(),
+                      onPressed: () async {
+                        firebaseAuth.signOut;
+                        nextScreenRemove(context, const SignIn());
+                      },
+                      child: const Text(
+                        "Log out",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16),
+                      ),
                     ),
+                    color: Colors.green,
                   ),
-                ],
-              );
-            } else {
-              return const Text("data");
-            }
-          },
-        ),
+                ),
+              ],
+            );
+          } else {
+            return const Text("data");
+          }
+        },
       ),
     );
   }

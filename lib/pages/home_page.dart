@@ -1,3 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:food_now/fragment/account_info_fragment.dart';
 import 'package:food_now/fragment/favorite_fragment.dart';
@@ -15,8 +17,23 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  FirebaseDatabase firebaseDatabase = FirebaseDatabase.instance;
+  late DatabaseReference databaseReference = firebaseDatabase.ref('carts');
+  String uid = FirebaseAuth.instance.currentUser!.uid;
   int selectIndex = 0;
   bool flag = true;
+  String ans = "";
+
+  
+
+  // count() async{
+  //   await databaseReference.get().then((value) {
+  //     setState(() {
+  //       ans = value.child(uid).child('totalQuantity').value.toString();
+  //     });
+  //   });
+  // }
+
   @override
   Widget build(BuildContext context) {
     List<Widget> screen = const [
@@ -84,14 +101,11 @@ class _HomePageState extends State<HomePage> {
                 shape: BoxShape.circle,
                 color: Colors.white
               ),
-              child: const Text("0", style: TextStyle(color: Colors.green),),
+              
+              child: Text(ans, style: const TextStyle(color: Colors.green),),
             )
           ],
         )),
-    );
+    );    
   }
-}
-
-cart(){
-
 }

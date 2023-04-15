@@ -43,7 +43,7 @@ class Cart {
     return Cart(
       userID: map['userID'] != null ? map['userID'] as String : null,
       totalQuantity: map['totalQuantity'] as int,
-      totalPrice: map['totalPrice'] as int,
+      totalPrice: map['totalPrice'] as int, 
       cartItems: map['cartItems'] != null ? List<CartItem>.from((map['cartItems'] as List<Object?>).map<CartItem?>((x) => CartItem.fromMap(x as Map),),) : null,
     );
   }
