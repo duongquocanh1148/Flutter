@@ -27,9 +27,8 @@ class _SignInFormState extends State<SignInForm> {
         await firebaseAuth
             .signInWithEmailAndPassword(email: email, password: password)
             .then((value) {
-          showSnackBar(context, Colors.green, "Sign in successfully");
           nextScreenRemove(context, const HomePage());
-        });
+        });       
       } on FirebaseAuthException catch (e) {
         showSnackBar(context, Colors.red, e.message.toString());
       }
@@ -44,33 +43,32 @@ class _SignInFormState extends State<SignInForm> {
       child: Column(
         children: [
           TextField(
-              controller: emailController,
-              textInputAction: TextInputAction.next,
-              keyboardType: TextInputType.emailAddress,
-              decoration: InputDecoration(
-                hintText: "Email",
-                prefixIcon: const Icon(Icons.email),
-                border: const OutlineInputBorder(),
-                errorText:
-                    !isEmailValidation ? "Please enter your email!" : null,
-              ),
-              onChanged: (value) {
-                setState(() {
-                  if (!validateEmail(value)) {
-                    isEmailValidation = false;
-                  } else {
-                    isEmailValidation = true;
-                  }
-                });                
-              },
-              onTap: () {
-                    setState(() {
-                      if (emailController.text.isEmpty) {
-                        isEmailValidation = false;
-                      }
-                    });
-                  },
-              ),
+            controller: emailController,
+            textInputAction: TextInputAction.next,
+            keyboardType: TextInputType.emailAddress,
+            decoration: InputDecoration(
+              hintText: "Email",
+              prefixIcon: const Icon(Icons.email),
+              border: const OutlineInputBorder(),
+              errorText: !isEmailValidation ? "Please enter your email!" : null,
+            ),
+            onChanged: (value) {
+              setState(() {
+                if (!validateEmail(value)) {
+                  isEmailValidation = false;
+                } else {
+                  isEmailValidation = true;
+                }
+              });
+            },
+            onTap: () {
+              setState(() {
+                if (emailController.text.isEmpty) {
+                  isEmailValidation = false;
+                }
+              });
+            },
+          ),
           const SizedBox(height: 10),
           TextField(
             controller: passwordController,
@@ -101,12 +99,12 @@ class _SignInFormState extends State<SignInForm> {
               });
             },
             onTap: () {
-                    setState(() {
-                      if (passwordController.text.isEmpty) {
-                        isPWValidation = false;
-                      }
-                    });
-                  },
+              setState(() {
+                if (passwordController.text.isEmpty) {
+                  isPWValidation = false;
+                }
+              });
+            },
           ),
           Row(
             children: [
@@ -132,8 +130,10 @@ class _SignInFormState extends State<SignInForm> {
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(),
                 onPressed: () {
+                  if (isCheck) {
+                    SharedPrefs().setLoginStatus(isCheck);
+                  }
                   signIn(emailController.text, passwordController.text);
-                  
                 },
                 child: const Text(
                   "Countinue",

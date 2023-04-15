@@ -12,10 +12,13 @@ void main() async {
 
 class MainApp extends StatelessWidget {
   const MainApp({super.key});
+
+  
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      
+    
+    return MaterialApp(     
       debugShowCheckedModeBanner: false,
       title: "Food Now",
       theme: ThemeData(
@@ -28,4 +31,7 @@ class MainApp extends StatelessWidget {
       },
       );
   }
+  
 }
+
+

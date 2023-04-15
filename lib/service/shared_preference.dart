@@ -1,15 +1,12 @@
 // ignore_for_file: avoid_print
-
-import 'dart:convert';
-
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/user.dart';
 
 
-class SharedPrefs{
-
-  saveUser(Users users) async {
+class SharedPrefs {
+  
+  void saveUser(Users users) async {
     final SharedPreferences pref = await SharedPreferences.getInstance();
     pref.setString('userName', users.userName);
     pref.setString('password', users.password);
@@ -18,6 +15,17 @@ class SharedPrefs{
     pref.setString('address', users.address!);
     pref.setString('mobile', users.mobile!);
   }
+
+  setLoginStatus(bool isCheck) async{
+    final pref = await SharedPreferences.getInstance();
+    pref.setBool('isCheck', isCheck);    
+  }
+
+  getLoginStatus() async{
+    final pref = await SharedPreferences.getInstance();
+    return pref.getBool('isCheck') ?? false;  
+  }
+
 
   
 
@@ -30,7 +38,6 @@ class SharedPrefs{
     String? address= pref.getString('address');
     String? mobile = pref.getString('mobile');
     print(username);
-    print(password);
     return Users(userName: username!, password: password!, email: email!, userID: userID!, address: address, mobile: mobile);
   }
 }

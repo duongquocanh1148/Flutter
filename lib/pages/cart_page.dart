@@ -1,15 +1,15 @@
-// ignore_for_file: implementation_imports
-
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:food_now/models/basket.dart';
-import 'package:food_now/models/food_basket.dart';
-import 'package:food_now/widget/textfield.dart';
 
+import '../models/cart.dart';
 import '../models/food.dart';
+import '../widget/textfield.dart';
 
 class CartPage extends StatelessWidget {
-  final FoodBasket? foodBasket;
-  const CartPage({super.key, this.foodBasket});
+  final Cart? cart;
+  final Food? food;
+  const CartPage({super.key, this.cart, this.food});
 
   @override
   Widget build(BuildContext context) {
@@ -19,14 +19,16 @@ class CartPage extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Column(children: [
-          map(),
-          listItem(),
-          ElevatedButton(
-            onPressed: () {},
-            child: const Text("Order"),
-          )
-        ]),
+        child: Expanded(
+          child: Column(children: [
+            map(),
+            //listItem(context),
+            ElevatedButton(
+              onPressed: () {},
+              child: const Text("Order"),
+            )
+          ]),
+        ),
       ),
     );
   }
@@ -35,74 +37,98 @@ class CartPage extends StatelessWidget {
     return SizedBox(
       width: double.infinity,
       height: 150,
-      child: Image.asset("asset/image/${foodBasket!.image}"),
+      child: Container(color: Colors.amber),
     );
   }
 
-  listItem() {
-    // Map<String, Food> foods;
-    // Basket basket = Basket(foods: foods, totalPrice: 1, totalItem: 1);
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.all(4.0),
-        child: Column(        
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    SizedBox(
-                        width: 100,
-                        height: 100,
-                        child: Image.asset("asset/image/${foodBasket!.image}")),
-                    Column(
-                      children: [
-                        Text(foodBasket!.name,
-                            style: const TextStyle(
-                                fontSize: 16, color: Colors.green)),
-                        TextWidget()
-                            .priceBasket(text: foodBasket!.price.toString()),
-                      ],
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    IconButton(
-                      iconSize: 15,
-                      splashRadius: 15,
-                      color: Colors.green,
-                      icon: const Icon(Icons.remove),
-                      onPressed: () {},
-                    ),
-                    const Text(
-                      "1",
-                      style: TextStyle(fontSize: 15),
-                    ),
-                    IconButton(
-                      iconSize: 15,
-                      splashRadius: 15,
-                      color: Colors.green,
-                      icon: const Icon(Icons.add),
-                      onPressed: () {},
-                    )
-                  ],
-                )
-              ],
-            ),
-          Container(
-            margin: EdgeInsets.only(top: 300),
-            child: Row(
+  listItem(BuildContext context) {
+    FirebaseDatabase firebaseDatabase = FirebaseDatabase.instance;
+    DatabaseReference databaseReference = firebaseDatabase.ref('carts');
+    String uid = FirebaseAuth.instance.currentUser!.uid;
+    if (cart == null && food == null) {
+      return const Text("Hiện không có món hàng nào!");
+    } else {
+      return Container(
+        width: MediaQuery.of(context).size.width,
+        height: 400,
+        child: SingleChildScrollView(
+          child: FutureBuilder(
+              future: databaseReference.get(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  print("a");
+                  Cart cart =
+                      Cart.fromMap(snapshot.data!.child(uid).value as Map);
+                  return ListView.builder(
+                      itemCount: snapshot.data!
+                          .child(uid)
+                          .child('cartItems')
+                          .children
+                          .length,
+                      itemBuilder: (context, index) {
+                        var c = cart.cartItems!.elementAt(index);
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                SizedBox(
+                                    width: 100,
+                                    height: 100,
+                                    child: Image.asset(
+                                        "asset/image/${c.food.image}")),
+                                Column(
+                                  children: [
+                                    Text(c.food.name,
+                                        style: const TextStyle(
+                                            fontSize: 16,
+                                            color: Colors.green)),
+                                    TextWidget().priceBasket(
+                                        text: c.food.price.toString()),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                IconButton(
+                                  iconSize: 15,
+                                  splashRadius: 15,
+                                  color: Colors.green,
+                                  icon: const Icon(Icons.remove),
+                                  onPressed: () {},
+                                ),
+                                const Text(
+                                  "1",
+                                  style: TextStyle(fontSize: 15),
+                                ),
+                                IconButton(
+                                  iconSize: 15,
+                                  splashRadius: 15,
+                                  color: Colors.green,
+                                  icon: const Icon(Icons.add),
+                                  onPressed: () {},
+                                )
+                              ],
+                              
+                            ),
+                            Container(
+            
+              child: Row(
               children: [
                 const Text("Tổng tiền: "),
-                TextWidget().price(text: foodBasket!.price.toString()),
+                TextWidget().price(text: food!.price.toString()),
               ],
             ),
           ),
-          ],         
+                          ],
+                        );
+                      });
+                }
+                return const Text("Hiện không có món hàng nào!");
+              }),
         ),
-      ),
-    );
+      );
+    }
   }
 }

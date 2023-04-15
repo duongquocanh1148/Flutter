@@ -51,8 +51,7 @@ class _SignUpFormState extends State<SignUpForm> {
             setState(() {
               id = value.user!.uid;             
             });
-          });
-          
+          });         
           Map<String, dynamic> map = {
             'userID': id,
             'email': emailController.text,
@@ -61,17 +60,30 @@ class _SignUpFormState extends State<SignUpForm> {
             'mobile': "",
             'address': "",
           };
+          Users users = Users.fromMap(map);
           SharedPrefs sharedPrefs = SharedPrefs();
-          //sharedPrefs.saveUser(map);
-         
+          sharedPrefs.saveUser(users);
           FirebaseDatabase.instance
               .ref('users')
               .child(map['userID'])
               .set(map)
               .then((value) {
+            
+          });                 
+            Map<String, dynamic> mapCart = {
+            'totalQuantity': 0,
+            'totalPrice': 0,            
+            'userID': id,            
+          };
+          
+        await FirebaseDatabase.instance
+            .ref('carts')
+            .child(mapCart['userID'])
+            .set(mapCart)
+            .then((value) {        
             showSnackBar(context, Colors.blue, "Register successfully");
-            Navigator.pop(context);
-          });
+            Navigator.pop(context);  
+        });
         } on FirebaseAuthException catch (e) {
           showSnackBar(context, Colors.red, e.message.toString());
         }

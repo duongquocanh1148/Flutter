@@ -74,7 +74,7 @@ class Food {
     };
   }
 
-  factory Food.fromMap(Map<String, dynamic> map) {
+  factory Food.fromMap(Map map) {
     return Food(
       name: map['name'] as String,
       image: map['image'] as String,
@@ -98,7 +98,6 @@ class Food {
   @override
   bool operator ==(covariant Food other) {
     if (identical(this, other)) return true;
-  
     return 
       other.name == name &&
       other.image == image &&

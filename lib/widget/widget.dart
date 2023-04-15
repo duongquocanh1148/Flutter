@@ -1,4 +1,6 @@
 
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 void nextScreen(context, page) {
@@ -14,7 +16,11 @@ void showSnackBar(context, color, message) {
       )
   );
 }
-
+String generateRandomString() {
+  var r = Random();
+  const chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
+  return List.generate(10, (index) => chars[r.nextInt(chars.length)]).join();
+}
 
 void nextScreenReplace(context, page) {
   Navigator.pushReplacement(

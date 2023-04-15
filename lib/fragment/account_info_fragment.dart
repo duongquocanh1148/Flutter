@@ -15,12 +15,15 @@ class AccountInfoFragment extends StatefulWidget {
 }
 
 class _AccountInfoFragmentState extends State<AccountInfoFragment> {
+  
+  
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   late FirebaseDatabase firebaseDatabase = FirebaseDatabase.instance;
   late DatabaseReference reference =
       firebaseDatabase.ref("users").child(firebaseAuth.currentUser!.uid);
   @override
   Widget build(BuildContext context) {
+    
     return Padding(
       padding: const EdgeInsets.all(10),
       child: Expanded(
@@ -31,6 +34,7 @@ class _AccountInfoFragmentState extends State<AccountInfoFragment> {
               .onValue,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
+              
               var user = snapshot.data!.snapshot;
               return Column(         
                 children: [

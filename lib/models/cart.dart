@@ -1,87 +1,60 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
-class Cart {
-  int id;
-  String foodKey;
-  String foodName;
-  int foodPrice;
-  String foodImage;
-  int foodRate;
-  String resKey;
-  int quantity;
-  double sum;
-  Cart({
-    required this.id,
-    required this.foodKey,
-    required this.foodName,
-    required this.foodPrice,
-    required this.foodImage,
-    required this.foodRate,
-    required this.resKey,
-    required this.quantity,
-    required this.sum,
-  });
+import 'package:flutter/foundation.dart';
 
+import 'package:food_now/models/cart_item.dart';
+
+class Cart {
+  String? userID;   
+  int totalQuantity;
+  int totalPrice;
+  List<CartItem>? cartItems;
+  Cart({
+    this.userID,
+    required this.totalQuantity,
+    required this.totalPrice,
+    this.cartItems,
+  });
   Cart copyWith({
-    int? id,
-    String? foodKey,
-    String? foodName,
-    int? foodPrice,
-    String? foodImage,
-    int? foodRate,
-    String? resKey,
-    int? quantity,
-    double? sum,
+    String? userID,
+    int? totalQuantity,
+    int? totalPrice,
+    List<CartItem>? cartItems,
   }) {
     return Cart(
-      id: id ?? this.id,
-      foodKey: foodKey ?? this.foodKey,
-      foodName: foodName ?? this.foodName,
-      foodPrice: foodPrice ?? this.foodPrice,
-      foodImage: foodImage ?? this.foodImage,
-      foodRate: foodRate ?? this.foodRate,
-      resKey: resKey ?? this.resKey,
-      quantity: quantity ?? this.quantity,
-      sum: sum ?? this.sum,
+      userID: userID ?? this.userID,
+      totalQuantity: totalQuantity ?? this.totalQuantity,
+      totalPrice: totalPrice ?? this.totalPrice,
+      cartItems: cartItems ?? this.cartItems,
     );
   }
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'id': id,
-      'foodKey': foodKey,
-      'foodName': foodName,
-      'foodPrice': foodPrice,
-      'foodImage': foodImage,
-      'foodRate': foodRate,
-      'resKey': resKey,
-      'quantity': quantity,
-      'sum': sum,
+      'userID': userID,
+      'totalQuantity': totalQuantity,
+      'totalPrice': totalPrice,
+      'cartItems': cartItems?.map((x) => x.toMap()).toList(),
     };
   }
 
-  factory Cart.fromMap(Map<String, dynamic> map) {
+  factory Cart.fromMap(Map map) {
     return Cart(
-      id: map['id'] as int,
-      foodKey: map['foodKey'] as String,
-      foodName: map['foodName'] as String,
-      foodPrice: map['foodPrice'] as int,
-      foodImage: map['foodImage'] as String,
-      foodRate: map['foodRate'] as int,
-      resKey: map['resKey'] as String,
-      quantity: map['quantity'] as int,
-      sum: map['sum'] as double,
+      userID: map['userID'] != null ? map['userID'] as String : null,
+      totalQuantity: map['totalQuantity'] as int,
+      totalPrice: map['totalPrice'] as int,
+      cartItems: map['cartItems'] != null ? List<CartItem>.from((map['cartItems'] as List<Object?>).map<CartItem?>((x) => CartItem.fromMap(x as Map),),) : null,
     );
   }
 
-  String toJson() => json.encode(toMap());
+  
 
   factory Cart.fromJson(String source) => Cart.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() {
-    return 'Cart(id: $id, foodKey: $foodKey, foodName: $foodName, foodPrice: $foodPrice, foodImage: $foodImage, foodRate: $foodRate, resKey: $resKey, quantity: $quantity, sum: $sum)';
+    return 'Cart(userID: $userID, totalQuantity: $totalQuantity, totalPrice: $totalPrice, cartItems: $cartItems)';
   }
 
   @override
@@ -89,27 +62,19 @@ class Cart {
     if (identical(this, other)) return true;
   
     return 
-      other.id == id &&
-      other.foodKey == foodKey &&
-      other.foodName == foodName &&
-      other.foodPrice == foodPrice &&
-      other.foodImage == foodImage &&
-      other.foodRate == foodRate &&
-      other.resKey == resKey &&
-      other.quantity == quantity &&
-      other.sum == sum;
+      other.userID == userID &&
+      other.totalQuantity == totalQuantity &&
+      other.totalPrice == totalPrice &&
+      listEquals(other.cartItems, cartItems);
   }
 
   @override
   int get hashCode {
-    return id.hashCode ^
-      foodKey.hashCode ^
-      foodName.hashCode ^
-      foodPrice.hashCode ^
-      foodImage.hashCode ^
-      foodRate.hashCode ^
-      resKey.hashCode ^
-      quantity.hashCode ^
-      sum.hashCode;
+    return userID.hashCode ^
+      totalQuantity.hashCode ^
+      totalPrice.hashCode ^
+      cartItems.hashCode;
   }
+
+  String toJson() => json.encode(toMap());
 }
