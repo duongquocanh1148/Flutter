@@ -67,6 +67,24 @@ class TextWidget{
        style: const TextStyle(color: Colors.red, fontSize: 21),
   ); 
   } 
+  Text priceHome({
+    TextStyle? style,
+    required String text,
+  }){
+     return Text(
+        "${formater.format(int.parse(text))} VND",
+       style: const TextStyle(color: Colors.red, fontSize: 16),
+  ); 
+  } 
+  Text priceAdd2Cart({
+    TextStyle? style,
+    required String text,
+  }){
+     return Text(
+        "${formater.format(int.parse(text))} VND",
+       style: const TextStyle(color: Colors.red, fontSize: 15),
+  ); 
+  } 
   Text priceBasket({
     TextStyle? style,
     required String text,
@@ -92,6 +110,15 @@ class TextWidget{
      return Text(
         text,
        style: const TextStyle(fontSize: 34, color: Colors.green),
+  ); 
+  } 
+  static Text info({
+    TextStyle? style,
+    required String text,
+  }){
+     return Text(
+        text,
+       style: const TextStyle(fontSize: 21, color: Colors.green),
   ); 
   } 
 }

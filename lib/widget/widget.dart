@@ -1,6 +1,7 @@
 
 import 'dart:math';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 void nextScreen(context, page) {
@@ -9,12 +10,28 @@ void nextScreen(context, page) {
 
 void showSnackBar(context, color, message) {
   ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
+      SnackBar(        
         content: Text(message),
         behavior: SnackBarBehavior.floating,
-        backgroundColor: color,
+        backgroundColor: color,       
       )
   );
+}
+void cupertino(context, title, message){
+  showDialog(context: context, builder: (context){
+      return CupertinoAlertDialog(
+          title: Text(title),
+          content: Text(message),
+          actions: [
+            CupertinoButton(
+                child: const Text('OK'),
+                onPressed: () {
+                  Navigator.pop(context);
+                  Navigator.pop(context);
+                })
+          ],
+        );
+  });
 }
 String generateRandomString() {
   var r = Random();

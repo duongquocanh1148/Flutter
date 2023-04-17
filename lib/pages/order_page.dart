@@ -1,43 +1,74 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:food_now/pages/add_to_cart_page.dart';
-import 'package:food_now/pages/order_page.dart';
-import 'package:food_now/widget/widget.dart';
+import 'package:food_now/pages/home_page.dart';
 
 import '../models/cart.dart';
 import '../widget/textfield.dart';
+import '../widget/widget.dart';
 
-class CartPage extends StatefulWidget {
+class OrderPage extends StatefulWidget {
   final Cart? cart;
-  const CartPage({super.key, this.cart});
+  const OrderPage({super.key, this.cart});
 
   @override
-  State<CartPage> createState() => _CartPageState();
+  State<OrderPage> createState() => _OrderPageState();
 }
 
-class _CartPageState extends State<CartPage> {
-  
-
+class _OrderPageState extends State<OrderPage> {
   @override
   Widget build(BuildContext context) {
     FirebaseDatabase firebaseDatabase = FirebaseDatabase.instance;
     DatabaseReference databaseReference = firebaseDatabase.ref('carts');
     String uid = FirebaseAuth.instance.currentUser!.uid;
-    Cart cart;    
+    Cart cart;
+    info() {
+      return SizedBox(
+        height: 140,
+        child: FutureBuilder(
+          future: FirebaseDatabase.instance.ref('users').get(),
+          builder: (context, snapshot) {
+          if(snapshot.hasData){
+            var d = snapshot.data!.child(uid);
+          return Container(
+            padding: const EdgeInsets.all(4.0),
+            alignment: Alignment.topLeft,
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                const Text("User Infomation", style: TextStyle(fontSize: 21),),
+                TextWidget.info(text: "Name: ${d.child('userName').value}"),
+                TextWidget.info(text: "Email: ${d.child('email').value}"),
+                TextWidget.info(text: "Mobile: ${d.child('mobile').value}"),
+                TextWidget.info(text: "Address: ${d.child('address').value}")
+              ],),
+            ),
+          );
+          }
+          else{
+            return Container(
+              alignment: Alignment.center,
+              child: const CircularProgressIndicator());
+          }
+          
+        },),
+      );
+    }
     listItem() {
       return StreamBuilder(
           stream: databaseReference.onValue,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              var d = snapshot.data!.snapshot.child(uid);
-              cart = Cart.fromMap(d.value as Map);
+              cart =
+                  Cart.fromMap(snapshot.data!.snapshot.child(uid).value as Map);
               return Column(
                 children: [
                   SizedBox(
-                    height: 530,
+                    height: 400,
                     child: ListView.builder(
-                        itemCount: d
+                        itemCount: snapshot.data!.snapshot
+                            .child(uid)
                             .child('cartItems')
                             .children
                             .length,
@@ -74,38 +105,10 @@ class _CartPageState extends State<CartPage> {
                               ),
                               Row(
                                 children: [
-                                  IconButton(
-                                    iconSize: 15,
-                                    splashRadius: 15,
-                                    color: Colors.green,
-                                    icon: const Icon(Icons.edit),
-                                    onPressed: () {                                      
-                                      showModalBottomSheet(
-                                          context: context,
-                                          shape: const RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.only(
-                                                  topLeft: Radius.circular(16),
-                                                  topRight:
-                                                      Radius.circular(16))),
-                                          builder: (BuildContext context) =>
-                                              AddToCart(
-                                                cartItem: cart.cartItems![index],                                               
-                                              ));
-                                    },
-                                  ),
                                   Text(
-                                    "Qty: ${c.quantity}",
+                                    "Số lượng: ${c.quantity}",
                                     style: const TextStyle(fontSize: 15),
                                   ),
-                                  
-                                  IconButton(
-                                    iconSize: 15,
-                                    splashRadius: 15,
-                                    color: Colors.green,
-                                    onPressed: (){
-                                    d.child('cartItems').child(index.toString()).ref.remove();
-                                    d.child('cartItems').child((index+1).toString()).ref.set(index);
-                                  }, icon: const Icon(Icons.delete))
                                 ],
                               ),
                             ],
@@ -144,22 +147,28 @@ class _CartPageState extends State<CartPage> {
                 ],
               );
             }
-            return const Text("Hiện không có món hàng nào!");
+            return const Text("No items found!");
           });
     }
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Cart"),
+        title: const Text("Orders"),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(children: [
+          info(),
           listItem(),
           ElevatedButton(
             onPressed: () {
-              nextScreen(context, OrderPage());
+              //Add data Order
+
+              //Delete Cart
+              
+              nextScreen(context, const HomePage());
             },
-            child: const Text("Order"),
+            child: const Text("Check Out"),
           )
         ]),
       ),

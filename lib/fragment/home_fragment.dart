@@ -6,6 +6,8 @@ import 'package:food_now/pages/detail_product_page.dart';
 import 'package:food_now/pages/detail_restaurant_page.dart';
 import 'package:food_now/widget/widget.dart';
 
+import '../widget/textfield.dart';
+
 class HomeFragment extends StatelessWidget {
   const HomeFragment({super.key});
 
@@ -208,10 +210,9 @@ class _ProductPopularState extends State<ProductPopular> {
                                   food.name,
                                   style: const TextStyle(
                                       color: Colors.green, fontSize: 18)),
-                              Text(
-                                  "${food.price} VND",
-                                  style: const TextStyle(
-                                      color: Colors.red, fontSize: 16))
+                              TextWidget().priceHome(text:
+                                  food.price.toString(),
+                                  )
                             ],
                           );
                         });

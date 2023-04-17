@@ -22,17 +22,16 @@ class _HomePageState extends State<HomePage> {
   String uid = FirebaseAuth.instance.currentUser!.uid;
   int selectIndex = 0;
   bool flag = true;
-  String ans = "";
+  String ans = "0";
 
-  
 
-  // count() async{
-  //   await databaseReference.get().then((value) {
-  //     setState(() {
-  //       ans = value.child(uid).child('totalQuantity').value.toString();
-  //     });
-  //   });
-  // }
+  count() async{
+    await databaseReference.get().then((value) {
+      setState(() {
+        ans = value.child(uid).child('totalQuantity').value.toString();      
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +41,18 @@ class _HomePageState extends State<HomePage> {
       OrderFragment(),     
       AccountInfoFragment()
     ];
+    count();
+    // ignore: unnecessary_null_comparison
+    int c = int.parse(ans.replaceAll("+", ""));
+    if(c>9){
+      ans = "9+";
+    }
+
+    
+     
+     
+    
+    
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -102,7 +113,7 @@ class _HomePageState extends State<HomePage> {
                 color: Colors.white
               ),
               
-              child: Text(ans, style: const TextStyle(color: Colors.green),),
+              child: Text(ans, style: const TextStyle(color: Colors.red),),
             )
           ],
         )),

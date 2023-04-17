@@ -18,7 +18,7 @@ class WelcomePage
         print(data);
         if(data) {
 
-          nextScreenRemove(context, const HomePage());
+          nextScreenRemove(context, HomePage());
         } else {
           Navigator.pushNamedAndRemoveUntil(context, SignIn.route, (route) => false);
         }
